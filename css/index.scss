@@ -15,3 +15,13 @@ a:visited {
 a:hover {
   text-decoration: underline;
 }
+
+ul {
+  list-style: none;
+}
+
+ul li:before {
+  content: "•";
+  font-size: 170%;
+  padding-right: 5px;
+}
