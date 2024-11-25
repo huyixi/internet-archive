@@ -39,12 +39,10 @@ jobs:
             title=$(echo "$html_comment" | perl -ne 'print $1 if /title: (.*?)(?:\n|$)/i')
             author=$(echo "$html_comment" | perl -ne 'print $1 if /author: (.*?)(?:\n|$)/i')
             date_from_file=$(echo "$html_comment" | perl -ne 'print $1 if /date: (\d{4}-\d{2}-\d{2})/i')
-            url=$(echo "$html_comment" | perl -ne 'print $1 if /url: (.*?)(?:\n|$)/i')
 
             echo "DEBUG: Extracted title: $title"
             echo "DEBUG: Extracted author: $author"
             echo "DEBUG: Extracted date: $date_from_file"
-            echo "DEBUG: Extracted url: $url"
 
             if [ ! -z "$date_from_file" ]; then
               timestamp=$(date -d "$date_from_file" +%s)
@@ -54,7 +52,7 @@ jobs:
               echo "DEBUG: No date found in HTML comment"
             fi
 
-            echo "$timestamp|$rel_path|$date_from_file" >> $temp_file
+            echo "$timestamp|$rel_path|$date_from_file|$title|$author" >> $temp_file
           done
 
           # Sort by timestamp (newest first) and generate HTML links
@@ -72,12 +70,12 @@ jobs:
 
             # 如果有作者就显示作者
             if [ ! -z "$author" ]; then
-              echo -n " <span class=\"author\">by $author</span>" >> $output_file
+              echo -n " <span class=\"author\">, $author</span>" >> $output_file
             fi
 
             # 如果有日期就显示日期
             if [ ! -z "$date" ]; then
-              echo -n " <span class=\"date\">($date)</span>" >> $output_file
+              echo -n " <span class=\"date\">, $date</span>" >> $output_file
             fi
 
             echo "DEBUG: [article] title: $title, author: $author, date: $date"
