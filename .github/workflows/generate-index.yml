@@ -29,31 +29,35 @@ jobs:
           # Create a temporary file to store file paths and dates
           temp_file=$(mktemp)
 
-          # Find HTML files and get their file times
+          # Find HTML files and get their dates
           find $repo_dir -type f -name "*.html" ! -name "index.html" | while read file; do
             rel_path=$(realpath --relative-to="$repo_dir" "$file")
 
-            # Get modification time (mtime) and creation time (ctime)
-            mod_time=$(stat -c %Y "$file")  # 修改时间，Unix timestamp
-            create_time=$(stat -c %W "$file")  # 创建时间，Unix timestamp
+            # First try to get date from HTML file
+            date_from_file=$(grep -o 'date: [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}' "$file" | sed 's/date: //')
 
-            # Use modification time first, if it's 0 then use creation time
-            if [ "$mod_time" != "0" ]; then
-              timestamp=$mod_time
+            if [ ! -z "$date_from_file" ]; then
+              # Convert YYYY-MM-DD to timestamp for sorting
+              timestamp=$(date -d "$date_from_file" +%s)
+              echo "DEBUG: File: $rel_path, Using date from file: $date_from_file"
             else
-              timestamp=$create_time
+              # If no date in file, use file creation time
+              timestamp=$(stat -c %W "$file")
+              date_from_stat=$(date -d "@$timestamp" +"%Y-%m-%d")
+              echo "DEBUG: File: $rel_path, Using creation time: $date_from_stat"
             fi
 
-            # Convert timestamp to readable format
-            date=$(date -d "@$timestamp" +"%Y-%m-%d %H:%M:%S")
-            echo "DEBUG: File: $rel_path, Date: $date"
-            echo "$timestamp|$rel_path" >> $temp_file
+            echo "$timestamp|$rel_path|$date_from_file" >> $temp_file
           done
 
           # Sort by timestamp (newest first) and generate HTML links
-          sort -rn $temp_file | while IFS='|' read -r timestamp path; do
-            date=$(date -d "@$timestamp" +"%Y-%m-%d %H:%M:%S")
-            echo "<li><a href=\"$path\">$path</a> <span class=\"date\">$date</span></li>" >> $output_file
+          sort -rn $temp_file | while IFS='|' read -r timestamp path date_from_file; do
+            if [ ! -z "$date_from_file" ]; then
+              display_date=$date_from_file
+            else
+              display_date=$(date -d "@$timestamp" +"%Y-%m-%d")
+            fi
+            echo "<li><a href=\"$path\">$path</a> <span class=\"date\">$display_date</span></li>" >> $output_file
           done
 
           # Clean up temporary file
