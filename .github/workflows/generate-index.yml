@@ -79,11 +79,6 @@ jobs:
               echo -n " <span class=\"date\">($date)</span>" >> $output_file
             fi
 
-            # 如果有原文URL就显示原文链接
-            if [ ! -z "$url" ]; then
-              echo -n " <span class=\"url\"><a href=\"$url\">原文</a></span>" >> $output_file
-            fi
-
             echo "DEBUG: title: $title, author: $author, date: $date, url: $url"
 
             echo "</li>" >> $output_file
