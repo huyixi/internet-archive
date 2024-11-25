@@ -22,7 +22,7 @@ jobs:
           output_file="$repo_dir/index.html"
 
           # HTML header 部分
-          echo "<html><head><title>huyixi's Internet Archive</title></head><body>" > $output_file
+          echo "<html><head><title>huyixi's Internet Archive</title><link rel=\"stylesheet\" href=\"css/index.css\"></head><body>" > $output_file
           echo "<h1>huyixi's Internet Archive</h1>" >> $output_file
           echo "<ul>" >> $output_file
 
