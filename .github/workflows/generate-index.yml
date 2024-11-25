@@ -31,11 +31,25 @@ jobs:
 
           # Find HTML files and get their git commit dates
           find $repo_dir -type f -name "*.html" ! -name "index.html" | while read file; do
+            echo "DEBUG: Processing file: $file"
             rel_path=$(realpath --relative-to="$repo_dir" "$file")
-            # Get the first commit date for this file
-            commit_date=$(git log --follow --format=%aI --reverse "$file" | head -1)
+            echo "DEBUG: Relative path: $rel_path"
+
+            echo "DEBUG: Current directory before cd: $(pwd)"
+            cd $repo_dir
+            echo "DEBUG: Current directory after cd: $(pwd)"
+
+            echo "DEBUG: Running git command: git log --follow --format=%aI --reverse -- \"$rel_path\""
+            commit_date=$(git log --follow --format=%aI --reverse -- "$rel_path" | head -1)
+            echo "DEBUG: Commit date found: $commit_date"
+
+            echo "DEBUG: Writing to temp file: $commit_date|$rel_path"
             echo "$commit_date|$rel_path" >> $temp_file
+            echo "DEBUG: ----------------------------------------"
           done
+
+          echo "DEBUG: Content of temp file:"
+          cat $temp_file
 
           # Sort by date (newest first) and generate HTML links
           sort -r $temp_file | while IFS='|' read -r date path; do
