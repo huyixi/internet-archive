@@ -69,7 +69,9 @@ jobs:
               fi
             else
               filename=$(basename "$path" .html)
-              echo -n "<a href=\"$path\">$filename</a>" >> $output_file
+              # 只对文件名进行下划线分割处理
+              display_filename=$(echo "$filename" | cut -d'_' -f1)
+              echo -n "<a href=\"$path\">$display_filename</a>" >> $output_file
               if [ ! -z "$author" ] || [ ! -z "$date" ]; then
                 echo -n "," >> $output_file
               fi
