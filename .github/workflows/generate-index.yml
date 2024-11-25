@@ -26,10 +26,25 @@ jobs:
           echo "<h1>huyixi's Internet Archive</h1>" >> $output_file
           echo "<ul>" >> $output_file
 
+          # Create a temporary file to store file paths and dates
+          temp_file=$(mktemp)
+
+          # Find HTML files and get their git commit dates
           find $repo_dir -type f -name "*.html" ! -name "index.html" | while read file; do
             rel_path=$(realpath --relative-to="$repo_dir" "$file")
-            echo "<li><a href=\"$rel_path\">$rel_path</a></li>" >> $output_file
+            # Get the first commit date for this file
+            commit_date=$(git log --follow --format=%aI --reverse "$file" | head -1)
+            echo "$commit_date|$rel_path" >> $temp_file
           done
+
+          # Sort by date (newest first) and generate HTML links
+          sort -r $temp_file | while IFS='|' read -r date path; do
+            formatted_date=$(date -d "$date" +%Y-%m-%d)
+            echo "<li><a href=\"$path\">$path</a> ($formatted_date)</li>" >> $output_file
+          done
+
+          # Clean up temporary file
+          rm $temp_file
 
           echo "</ul>" >> $output_file
           echo "</body></html>" >> $output_file
