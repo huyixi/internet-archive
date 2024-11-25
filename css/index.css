@@ -1,4 +1,9 @@
 @charset "UTF-8";
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
 a {
   color: #00e;
   text-decoration: none;
