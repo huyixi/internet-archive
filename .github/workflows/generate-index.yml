@@ -35,8 +35,16 @@ jobs:
             html_comment=$(perl -0777 -ne 'print $& if /<!--[\s\S]*?-->/g' "$file")
             echo "DEBUG: Found HTML comment: $html_comment"
 
-            date_from_file=$(echo "$html_comment" | perl -ne 'if (/saved date: \w+ (\w+) (\d+) (\d{4})/) { printf "%04d-%02d-%02d", $3, get_month($1), $2 } sub get_month { my %months = (Jan=>1,Feb=>2,Mar=>3,Apr=>4,May=>5,Jun=>6,Jul=>7,Aug=>8,Sep=>9,Oct=>10,Nov=>11,Dec=>12); return $months{$_[0]} }')
+            # 提取元数据
+            title=$(echo "$html_comment" | perl -ne 'print $1 if /title: (.*?)(?:\n|$)/i')
+            author=$(echo "$html_comment" | perl -ne 'print $1 if /author: (.*?)(?:\n|$)/i')
+            date_from_file=$(echo "$html_comment" | perl -ne 'print $1 if /date: (\d{4}-\d{2}-\d{2})/i')
+            url=$(echo "$html_comment" | perl -ne 'print $1 if /url: (.*?)(?:\n|$)/i')
+
+            echo "DEBUG: Extracted title: $title"
+            echo "DEBUG: Extracted author: $author"
             echo "DEBUG: Extracted date: $date_from_file"
+            echo "DEBUG: Extracted url: $url"
 
             if [ ! -z "$date_from_file" ]; then
               timestamp=$(date -d "$date_from_file" +%s)
@@ -50,13 +58,33 @@ jobs:
           done
 
           # Sort by timestamp (newest first) and generate HTML links
-          sort -rn $temp_file | while IFS='|' read -r timestamp path date_from_file; do
-            if [ ! -z "$date_from_file" ]; then
-              display_date=$date_from_file
+          sort -rn $temp_file | while IFS='|' read -r timestamp path date title author url; do
+            # 开始构建HTML
+            echo -n "<li>" >> $output_file
+
+            # 如果有标题就用标题，否则用文件路径
+            if [ ! -z "$title" ]; then
+              echo -n "<a href=\"$path\">$title</a>" >> $output_file
             else
-              display_date=$(date -d "@$timestamp" +"%Y-%m-%d")
+              echo -n "<a href=\"$path\">$path</a>" >> $output_file
             fi
-            echo "<li><a href=\"$path\">$path</a> <span class=\"date\">($display_date)</span></li>" >> $output_file
+
+            # 如果有作者就显示作者
+            if [ ! -z "$author" ]; then
+              echo -n " <span class=\"author\">by $author</span>" >> $output_file
+            fi
+
+            # 如果有日期就显示日期
+            if [ ! -z "$date" ]; then
+              echo -n " <span class=\"date\">($date)</span>" >> $output_file
+            fi
+
+            # 如果有原文URL就显示原文链接
+            if [ ! -z "$url" ]; then
+              echo -n " <span class=\"url\"><a href=\"$url\">原文</a></span>" >> $output_file
+            fi
+
+            echo "</li>" >> $output_file
           done
 
           # Clean up temporary file
