@@ -84,6 +84,8 @@ jobs:
               echo -n " <span class=\"url\"><a href=\"$url\">原文</a></span>" >> $output_file
             fi
 
+            echo "DEBUG: title: $title, author: $author, date: $date, url: $url"
+
             echo "</li>" >> $output_file
           done
 
