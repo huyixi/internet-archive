@@ -29,32 +29,31 @@ jobs:
           # Create a temporary file to store file paths and dates
           temp_file=$(mktemp)
 
-          # Find HTML files and get their git commit dates
+          # Find HTML files and get their file times
           find $repo_dir -type f -name "*.html" ! -name "index.html" | while read file; do
-            echo "DEBUG: Processing file: $file"
             rel_path=$(realpath --relative-to="$repo_dir" "$file")
-            echo "DEBUG: Relative path: $rel_path"
 
-            echo "DEBUG: Current directory before cd: $(pwd)"
-            cd $repo_dir
-            echo "DEBUG: Current directory after cd: $(pwd)"
+            # Get modification time (mtime) and creation time (ctime)
+            mod_time=$(stat -c %Y "$file")  # 修改时间，Unix timestamp
+            create_time=$(stat -c %W "$file")  # 创建时间，Unix timestamp
 
-            echo "DEBUG: Running git command: git log --follow --format=%aI --reverse -- \"$rel_path\""
-            commit_date=$(git log --follow --format=%aI --reverse -- "$rel_path" | head -1)
-            echo "DEBUG: Commit date found: $commit_date"
+            # Use modification time first, if it's 0 then use creation time
+            if [ "$mod_time" != "0" ]; then
+              timestamp=$mod_time
+            else
+              timestamp=$create_time
+            fi
 
-            echo "DEBUG: Writing to temp file: $commit_date|$rel_path"
-            echo "$commit_date|$rel_path" >> $temp_file
-            echo "DEBUG: ----------------------------------------"
+            # Convert timestamp to readable format
+            date=$(date -d "@$timestamp" +"%Y-%m-%d %H:%M:%S")
+            echo "DEBUG: File: $rel_path, Date: $date"
+            echo "$timestamp|$rel_path" >> $temp_file
           done
 
-          echo "DEBUG: Content of temp file:"
-          cat $temp_file
-
-          # Sort by date (newest first) and generate HTML links
-          sort -r $temp_file | while IFS='|' read -r date path; do
-            formatted_date=$(date -d "$date" +%Y-%m-%d)
-            echo "<li><a href=\"$path\">$path</a> ($formatted_date)</li>" >> $output_file
+          # Sort by timestamp (newest first) and generate HTML links
+          sort -rn $temp_file | while IFS='|' read -r timestamp path; do
+            date=$(date -d "@$timestamp" +"%Y-%m-%d %H:%M:%S")
+            echo "<li><a href=\"$path\">$path</a> <span class=\"date\">$date</span></li>" >> $output_file
           done
 
           # Clean up temporary file
