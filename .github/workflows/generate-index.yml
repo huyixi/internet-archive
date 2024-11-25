@@ -63,19 +63,30 @@ jobs:
             # 如果有标题就用标题，否则用文件路径
             if [ ! -z "$title" ]; then
               echo -n "<a href=\"$path\">$title</a>" >> $output_file
+              # 如果后面还有author或date，就添加逗号
+              if [ ! -z "$author" ] || [ ! -z "$date" ]; then
+                echo -n "," >> $output_file
+              fi
             else
               filename=$(basename "$path" .html)
               echo -n "<a href=\"$path\">$filename</a>" >> $output_file
+              if [ ! -z "$author" ] || [ ! -z "$date" ]; then
+                echo -n "," >> $output_file
+              fi
             fi
 
             # 如果有作者就显示作者
             if [ ! -z "$author" ]; then
-              echo -n " <span class=\"author\">, $author</span>" >> $output_file
+              echo -n " <span class=\"author\">$author</span>" >> $output_file
+              # 只有当date存在时才在author后添加逗号
+              if [ ! -z "$date" ]; then
+                echo -n "," >> $output_file
+              fi
             fi
 
-            # 如果有日期就显示日期
+            # 如果有日期就显示日期（最后一个变量，不需要逗号）
             if [ ! -z "$date" ]; then
-              echo -n " <span class=\"date\">, $date</span>" >> $output_file
+              echo -n " <span class=\"date\">$date</span>" >> $output_file
             fi
 
             echo "DEBUG: [article] title: $title, author: $author, date: $date"
