@@ -1,0 +1,34 @@
+name: Generate index.html
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  generate-index:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Generate index.html
+        run: |
+          chmod +x ./scripts/generate-index.sh
+          ./scripts/generate-index.sh
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain)" ]; then
+            git add index.html
+            git commit -m "Update index.html with new HTML files"
+            git push
+          else
+            echo "No changes to commit"
+          fi
