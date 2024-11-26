@@ -22,18 +22,18 @@ jobs:
           output_file="$repo_dir/index.html"
 
           cat << 'EOF' > $output_file
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>huyixi's Internet Archive</title>
-    <link rel="stylesheet" href="css/index.min.css">
-</head>
-<body>
-    <h1>huyixi's Internet Archive</h1>
-    <ul>
-EOF
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>huyixi's Internet Archive</title>
+              <link rel="stylesheet" href="css/index.min.css">
+          </head>
+          <body>
+              <h1>huyixi's Internet Archive</h1>
+              <ul>
+          EOF
 
           temp_file=$(mktemp)
 
@@ -116,7 +116,7 @@ EOF
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          if [-n "$(git status --porcelain)"]; then
+          if [ -n "$(git status --porcelain)"]; then
             git add index.html
             git commit -m "Update index.html with new HTML files"
             git push
