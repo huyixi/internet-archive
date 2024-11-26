@@ -21,9 +21,19 @@ jobs:
           repo_dir=$(pwd)
           output_file="$repo_dir/index.html"
 
-          echo "<html><head><title>huyixi's Internet Archive</title><link rel=\"stylesheet\" href=\"css/index.css\"></head><body>" > $output_file
-          echo "<h1>huyixi's Internet Archive</h1>" >> $output_file
-          echo "<ul>" >> $output_file
+          cat << EOF > $output_file
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>huyixi's Internet Archive</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <h1>huyixi's Internet Archive</h1>
+    <ul>
+EOF
 
           temp_file=$(mktemp)
 
