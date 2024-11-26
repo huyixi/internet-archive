@@ -17,11 +17,9 @@ a:hover {
 }
 
 ul {
-  list-style: none;
-}
-
-ul li:before {
-  content: "•";
-  font-size: 170%;
-  padding-right: 5px;
+  padding-left: 0;
+  list-style-position: inside;
+  li {
+    margin-bottom: 0.25rem;
+  }
 }
