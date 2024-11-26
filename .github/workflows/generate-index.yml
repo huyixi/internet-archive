@@ -20,66 +20,52 @@ jobs:
         run: |
           repo_dir=$(pwd)
           output_file="$repo_dir/index.html"
-
           cat << 'EOF' > $output_file
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-              <meta charset="UTF-8">
-              <meta name="viewport" content="width=device-width, initial-scale=1.0">
-              <title>huyixi's Internet Archive</title>
-              <link rel="stylesheet" href="css/index.min.css">
-          </head>
-          <body>
-              <h1>huyixi's Internet Archive</h1>
-              <ul>
-          EOF
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>huyixi's Internet Archive</title>
+    <link rel="stylesheet" href="css/index.min.css">
+</head>
+<body>
+    <h1>huyixi's Internet Archive</h1>
+    <ul>
+EOF
 
           temp_file=$(mktemp)
 
           find $repo_dir -type f -name "*.html" ! -name "index.html" | while read file; do
             rel_path=$(realpath --relative-to="$repo_dir" "$file")
 
-            echo "DEBUG: Processing file: $file"
-
             html_comment=$(perl -0777 -ne 'print $& if /<!--[\s\S]*?-->/g' "$file")
-            echo "DEBUG: Found HTML comment: $html_comment"
 
-            # 提取元数据
+            # Extract metadata
             title=$(echo "$html_comment" | perl -ne 'print $1 if /title: (.*?)(?:\n|$)/i')
             author=$(echo "$html_comment" | perl -ne 'print $1 if /author: (.*?)(?:\n|$)/i')
             date_from_file=$(echo "$html_comment" | perl -ne 'print $1 if /date: (\d{4}-\d{2}-\d{2})/i')
 
-            echo "DEBUG: Extracted title: $title"
-            echo "DEBUG: Extracted author: $author"
-            echo "DEBUG: Extracted date: $date_from_file"
-
             if [ ! -z "$date_from_file" ]; then
               timestamp=$(date -d "$date_from_file" +%s)
-              echo "DEBUG: Formatted date: $date_from_file"
-              echo "DEBUG: Generated timestamp: $timestamp"
             else
-              echo "DEBUG: No date found in HTML comment"
+              timestamp=0
             fi
 
             echo "$timestamp|$rel_path|$date_from_file|$title|$author" >> $temp_file
           done
 
           # Sort by timestamp (newest first) and generate HTML links
-          sort -rn $temp_file | while IFS='|' read -r timestamp path date title author url; do
-            # 开始构建HTML
+          sort -rn $temp_file | while IFS='|' read -r timestamp path date title author; do
             echo -n "<li>" >> $output_file
 
-            # 如果有标题就用标题，否则用文件路径
             if [ ! -z "$title" ]; then
               echo -n "<a href=\"$path\">$title</a>" >> $output_file
-              # 如果后面还有author或date，就添加逗号
               if [ ! -z "$author" ] || [ ! -z "$date" ]; then
                 echo -n "," >> $output_file
               fi
             else
               filename=$(basename "$path" .html)
-              # 只对文件名进行下划线分割处理
               display_filename=$(echo "$filename" | cut -d'_' -f1)
               echo -n "<a href=\"$path\">$display_filename</a>" >> $output_file
               if [ ! -z "$author" ] || [ ! -z "$date" ]; then
@@ -87,21 +73,16 @@ jobs:
               fi
             fi
 
-            # 如果有作者就显示作者
             if [ ! -z "$author" ]; then
               echo -n " <span class=\"author\">$author</span>" >> $output_file
-              # 只有当date存在时才在author后添加逗号
               if [ ! -z "$date" ]; then
                 echo -n "," >> $output_file
               fi
             fi
 
-            # 如果有日期就显示日期（最后一个变量，不需要逗号）
             if [ ! -z "$date" ]; then
               echo -n " <span class=\"date\">$date</span>" >> $output_file
             fi
-
-            echo "DEBUG: [article] title: $title, author: $author, date: $date"
 
             echo "</li>" >> $output_file
           done
@@ -116,7 +97,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          if [ -n "$(git status --porcelain)"]; then
+          if [ -n "$(git status --porcelain)" ]; then
             git add index.html
             git commit -m "Update index.html with new HTML files"
             git push
