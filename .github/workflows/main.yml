@@ -18,8 +18,8 @@ jobs:
 
       - name: Generate index.html
         run: |
-          chmod +x ./scripts/generate-index.sh
-          ./scripts/generate-index.sh
+          chmod +x ./.github/workflows/scripts/generate-index.sh
+          ./.github/workflows/scripts/generate-index.sh
 
       - name: Commit and push changes
         run: |

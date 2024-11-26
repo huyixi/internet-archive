@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 设置变量
-repo_dir=$GITHUB_WORKSPACE
+repo_dir=${GITHUB_WORKSPACE:-$(pwd)}
 output_file="$repo_dir/index.html"
 
 # 创建 HTML 头部
