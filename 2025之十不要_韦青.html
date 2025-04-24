@@ -1,0 +1,709 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width initial-scale=1" />
+        <title>工程师韦青</title>
+        <style>
+            html {
+                overflow-x: initial !important;
+            }
+            :root {
+                --bg-color: #ffffff;
+                --text-color: #333333;
+                --select-text-bg-color: #b5d6fc;
+                --select-text-font-color: auto;
+                --monospace: "Lucida Console", Consolas, "Courier", monospace;
+                --title-bar-height: 20px;
+            }
+            html {
+                font-size: 14px;
+                background-color: var(--bg-color);
+                color: var(--text-color);
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+
+            body {
+                margin: 0px;
+                padding: 0px;
+                height: auto;
+                inset: 0px;
+                font-size: 1rem;
+                line-height: 1.428571;
+                overflow-x: hidden;
+                background: inherit;
+            }
+            a.url {
+                word-break: break-all;
+            }
+            a:active,
+            a:hover {
+                outline: 0px;
+            }
+
+            ::selection {
+                text-shadow: none;
+                background: var(--select-text-bg-color);
+                color: var(--select-text-font-color);
+            }
+            #write {
+                margin: 0px auto;
+                height: auto;
+                width: inherit;
+                word-break: normal;
+                overflow-wrap: break-word;
+                position: relative;
+                white-space: normal;
+                overflow-x: visible;
+                padding-top: 36px;
+            }
+            body.typora-export {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+            @media screen and (max-width: 500px) {
+                body.typora-export {
+                    padding-left: 0px;
+                    padding-right: 0px;
+                }
+                #write {
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
+            }
+            #write ol {
+                position: relative;
+            }
+            *,
+            ::after,
+            ::before {
+                box-sizing: border-box;
+            }
+            #write h1,
+            #write p {
+                width: inherit;
+                position: relative;
+            }
+            p {
+                line-height: inherit;
+            }
+            h1 {
+                break-after: avoid-page;
+                break-inside: avoid;
+                orphans: 4;
+            }
+            p {
+                orphans: 4;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+
+            h1,
+            p {
+                margin-top: 1rem;
+                margin-bottom: 1rem;
+            }
+            a {
+                cursor: pointer;
+            }
+            div.hr:focus {
+                cursor: none;
+            }
+            li div {
+                padding-top: 0px;
+            }
+            blockquote {
+                margin: 1rem 0px;
+            }
+
+            li p {
+                margin: 0.5rem 0px;
+            }
+            li blockquote {
+                margin: 1rem 0px;
+            }
+            li {
+                margin: 0px;
+                position: relative;
+            }
+            blockquote > :last-child {
+                margin-bottom: 0px;
+            }
+            blockquote > :first-child,
+            li > :first-child {
+                margin-top: 0px;
+            }
+            @media print {
+                body,
+                html {
+                    border: 1px solid transparent;
+                    height: 99%;
+                    break-after: avoid;
+                    break-before: avoid;
+                    font-variant-ligatures: no-common-ligatures;
+                }
+                #write {
+                    margin-top: 0px;
+                    border-color: transparent !important;
+                    padding-top: 0px !important;
+                    padding-bottom: 0px !important;
+                }
+                .typora-export * {
+                    print-color-adjust: exact;
+                }
+                .typora-export #write {
+                    break-after: avoid;
+                }
+                .typora-export #write::after {
+                    height: 0px;
+                }
+                #write > p:nth-child(1) {
+                    margin-top: 0px;
+                }
+            }
+            code {
+                font-family: var(--monospace);
+            }
+            code {
+                text-align: left;
+                vertical-align: initial;
+            }
+            @media print {
+                .typora-export h1 {
+                    break-inside: avoid;
+                }
+            }
+
+            /**
+         *  We v0.2
+         */
+
+            :root {
+                --we-bg-color: #ffffff;
+                --we-text-color: rgba(0, 0, 0, 0.9);
+                --we-text-pale-color: #8e8d91;
+                --we-accent-color: #576b95;
+                --we-accent-pale-color: #d1d6e5;
+                --we-scrollbar-thumb-color: #bbbbbb;
+                --we-scrollbar-thumb-hover-color: #aaaaaa;
+                --we-hover-bg-color: #f5f5f5;
+                --we-input-border-color: #42414920;
+                --we-input-border-focus-color: #42414940;
+                --we-blockquote-border-color: #8e8d9170;
+                --we-hr-color: #eeeeee;
+                --we-gutter-border-color: #bababa50;
+                --we-hover-accent-color: #bababa;
+                --we-table-border-color: #dbdbdb;
+                --we-table-btn-color: #8e8d9190;
+                --we-table-btn-hover-color: #000;
+                --we-highlight-color: #33529d70;
+                --we-code-tooltip-border-color: #f3f3f3;
+                --we-img-meta-color: #5b469b;
+                --we-blur-text-color: #dddddd;
+                --we-heading-char-color: #dddddd;
+
+                --bg-color: var(--we-bg-color);
+                --text-color: var(--we-text-color);
+                --md-char-color: var(--we-text-pale-color);
+                --meta-content-color: var(--we-text-pale-color);
+
+                --primary-color: var(--text-color);
+                --primary-btn-border-color: var(--text-color);
+                --primary-btn-text-color: var(--text-color);
+
+                --active-file-bg-color: var(--we-hover-bg-color);
+                --active-file-text-color: var(--text-color);
+                --active-file-border-color: var(--we-hover-bg-color);
+
+                --side-bar-bg-color: var(--bg-color);
+                --item-hover-bg-color: var(--we-hover-bg-color);
+                --item-hover-text-color: var(--text-color);
+
+                --select-text-bg-color: var(--we-accent-pale-color);
+                --rawblock-edit-panel-bd: var(--we-hover-bg-color);
+                --blur-text-color: var(--we-blur-text-color);
+                --heading-char-color: var(--we-heading-char-color);
+
+                --window-border: 1px solid var(--we-hover-bg-color);
+                --monospace:
+                    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+                    "Liberation Mono", "Courier New", monospace;
+            }
+
+            body {
+                background-color: var(--bg-color) !important;
+                font-family: "canger";
+            }
+
+            html {
+                font-size: 18px;
+            }
+
+            content {
+                transition-duration: 0s;
+            }
+
+            /* ======= scrollbar ====== */
+
+            ::-webkit-scrollbar {
+                width: 8px;
+                height: 8px;
+                transition: 1s;
+            }
+
+            ::-webkit-scrollbar-thumb {
+                background-color: var(--we-scrollbar-thumb-color);
+                background-clip: padding-box;
+                border: 2px solid transparent;
+                border-radius: 4px;
+                transition: 1s;
+            }
+
+            ::-webkit-scrollbar-thumb:vertical:hover,
+            ::-webkit-scrollbar-thumb:horizontal:hover {
+                background-color: var(--we-scrollbar-thumb-hover-color);
+                transition: 0.3s;
+            }
+
+            ::-webkit-scrollbar-track {
+                background-color: transparent;
+            }
+
+            ::-webkit-scrollbar-corner {
+                background: none;
+            }
+
+            /* ======= sidebar ====== */
+
+            /* ======= search ======= */
+
+            /* ======= typography ====== */
+
+            content {
+                overflow-y: scroll;
+            }
+
+            #write {
+                background-color: var(--bg-color) !important;
+                max-width: 768px;
+                padding-left: 24px;
+                padding-right: 16px;
+                /* scrollbar width 8px */
+                padding-bottom: 180px;
+                line-height: 1.5;
+            }
+
+            h1 {
+                margin-top: 1.75rem;
+                margin-bottom: 1.75rem;
+                font-size: 1.8rem;
+            }
+
+            p {
+                margin-block: 1.35rem;
+            }
+
+            blockquote {
+                margin-block: 1.35rem;
+                padding-left: 1rem;
+                border-left: 2px solid var(--we-blockquote-border-color);
+                color: var(--we-text-pale-color);
+            }
+
+            a {
+                text-underline-offset: 0.3em;
+                color: var(--we-accent-color);
+            }
+
+            a:hover {
+                opacity: 0.85;
+            }
+
+            code {
+                font-size: 0.9em;
+                background-color: var(--we-hover-bg-color);
+                border-radius: 2.5px;
+                padding: 0.1em 0.5em 0.15em;
+            }
+
+            hr {
+                border-top: 2px solid var(--we-hr-color);
+                margin-block: 2.5rem;
+            }
+
+            ol {
+                margin-block: 1.35rem;
+                padding-inline-start: 2rem;
+            }
+
+            ol ol {
+                margin-block: 0.5rem;
+            }
+
+            li p {
+                margin: 0.8rem 0;
+            }
+
+            /* ======= others ====== */
+
+            @keyframes blink-bg {
+                0%,
+                49% {
+                    background-color: var(--we-accent-pale-color);
+                }
+            }
+
+            @media print {
+                @page {
+                    margin: 0 0 0 0;
+                }
+                body.typora-export {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+                #write {
+                    padding: 0;
+                }
+            }
+        </style>
+    </head>
+    <body class="typora-export">
+        <div class="typora-export-content">
+            <div id="write">
+                <h1 id="韦青二零二五之十不要">
+                    <span>韦青：二零二五之“十不/要”</span>
+                </h1>
+                <p>
+                    <span>原文链接：</span
+                    ><a
+                        href="https://weibo.com/1872280171/5118045908898061"
+                        target="_blank"
+                        class="url"
+                        >https://weibo.com/1872280171/5118045908898061</a
+                    >
+                </p>
+                <blockquote>
+                    <p>
+                        <span
+                            >2024的反思与2025的展望,谨记生之为人的初心，警惕因技术发展而逐渐异化的舆论与人心
+                        </span>
+                    </p>
+                </blockquote>
+                <hr />
+                <ol start="">
+                    <li>
+                        <p>
+                            <strong
+                                ><span
+                                    >在技术的浪潮中，不要忽略沉默而饱受影响的大多数
+                                    - 普罗大众</span
+                                ></strong
+                            ><span> </span>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong
+                                ><span
+                                    >当狂欢于机器代替人和黑灯工厂时，不要忘记“人”才是目的</span
+                                ></strong
+                            ><span> </span>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong
+                                ><span
+                                    >当言必谈机器人、硅基生命时，不要忘记机器不是人，硅基也没有生命</span
+                                ></strong
+                            ><span> </span>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong
+                                ><span
+                                    >当AI成为热词时，不要忘记它是机器学习</span
+                                ></strong
+                            ><span> </span>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong
+                                ><span
+                                    >当机器持续学习时，不要忘记人类本是一个因终身学习而生存下来的物种</span
+                                ></strong
+                            ><span> </span>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong
+                                ><span
+                                    >当热议AGI时，不要忘记人类连自己如何产生意识还众说纷纭</span
+                                ></strong
+                            ><span> </span>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong
+                                ><span
+                                    >当担心自己的工作会被机器代替时，不要忘记问问自己到底喜欢做什么事情</span
+                                ></strong
+                            ><span> </span>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong
+                                ><span
+                                    >当徜徉数字媒介时，不要忘记问问什么样的消息才能被你看到以及它是否代表真相</span
+                                ></strong
+                            ><span> </span>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong
+                                ><span
+                                    >当摄取海量信息而心安理得时，不要忘记问问自己能否消化、记住和应用这么多信息</span
+                                ></strong
+                            ><span> </span>
+                        </p>
+                    </li>
+                    <li>
+                        <p>
+                            <strong
+                                ><span
+                                    >当机器学习到人类知识后，不要忘记问问自己真正需要的是知识还是应用知识的智慧</span
+                                ></strong
+                            ><span> </span>
+                        </p>
+                    </li>
+                </ol>
+                <hr />
+                <p>
+                    <span
+                        >“勇踏前人未至之境”！人之初心，本就是机器的主人。在机器的辅助下，坚守人性，互帮互助，秉持“无限游戏”的原则，生生不息，上下求索而不止。
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <strong><span>不是人类没有未来</span></strong
+                    ><span
+                        >，是活成为机器的人类、甘心将机器等同为人类的人类、丧失终身学习能力的人类和将人生的决定让渡给机器的人类没有未来。
+                    </span>
+                </p>
+                <p>
+                    <strong><span>终极而言</span></strong
+                    ><span
+                        >，是那些丧失了热乎乎的人生信仰、追求与人性的“机器”人没有未来，还有那些动辄将人类等同为机器、动辄混淆“能指/所指”的人类没有未来。
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <span
+                        >人类真正要警惕的永远是人类自己！真正不要忘记的是机器的知识都是从人类学到的。
+                    </span>
+                </p>
+                <blockquote>
+                    <p>
+                        <span>人类高尚，机器就高尚；</span><br /><span
+                            >人类下流，机器就下流；</span
+                        ><br /><span>人类友善，机器就友善；</span><br /><span
+                            >人类残酷，机器就残酷；</span
+                        ><br /><span
+                            >人类让渡自己的主权，机器就接受人类的主权；</span
+                        ><br /><span
+                            >人类主动驾驭机器，机器就服从人类的驾驭。
+                        </span>
+                    </p>
+                </blockquote>
+                <hr />
+                <p>
+                    <span>只不过，这一切需要人类的主观能动性(</span
+                    ><code>volition</code
+                    ><span>)，去驾驭机器因被设计为智能体(</span
+                    ><code>agent</code
+                    ><span
+                        >)而显现出来的、极易与人类主观能动性混淆的能动性(</span
+                    ><code>agency</code><span>)。 </span>
+                </p>
+                <p>
+                    <span>而主观能动性(</span><code>volition</code
+                    ><span>)与能动性(</span><code>agency</code
+                    ><span
+                        >)的异同，是现象学、认知神经科学和哲学与神学研究的领域。如果科学与技术界人士不具备真正的科学精神，反而将本来就是等待不断被突破与证伪的“知之为知之，不知为不知“的科学变成”唯科学论“的科学教，那么就会出现当前各种”盲人摸四不像“所得的片面之词，被大众媒体解读为定论的媒体思潮怪像，而未经信息文明启蒙的大众，很容易陷入虚无主义的怪圈而不拔。此时人们可能会明白在《黑客帝国》电影中尼奥尚未选择红、蓝药丸前，他去书架上取出光碟的那本书是鲍德里亚的《拟像与仿真》，打开的那一页是“虚无主义”一章的标题，和开门时那个女郎肩膀上的兔子(所代表的是《爱丽丝漫游奇镜》里面那个深邃无比的兔子洞)，导演在这些拟像背后所蕴含的深意。只可惜，有多少电影观众能够与导演感同身受呢？
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <span
+                        >人类社会亟需的是横跨上述各门学科的新型人才，从某种意义而言，我们需要默认当前人类都是未被信息文明启蒙的“愚昧之人”。我们的远古认知基因，和曾经的知识稀缺环境，造就了我们在信息文明下的易骗本性。
+                    </span>
+                </p>
+                <p>
+                    <span
+                        >在农业与工业文明条件下，我们居然仅仅凭借知识，不需要太多的智慧（智慧在此处被定义为人类驾驭知识的能力）就能够在人类社会中谋求相对安稳的生活。当机器开始能够学习知识，人类就开始恐慌，竟忘记了人类学习知识的目的不是学富五车，充当人肉“知识存储器”，而是增智开慧，灵性升华。机器会学习了，人类不是正好可以指挥机器做那些自己不想/不会/不能/不好做的工作，剩下精力和时间做人类该做的事。当然，如果这一轮机器的进步，又把人类陷入到与机器拼速度与持久力的工作内容中，那就是人类的噩耗。
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <strong
+                        ><span
+                            >知识，如同工具和机器一样，是人类的手段而不是目的，人类自己才是目的。</span
+                        ></strong
+                    ><span
+                        >活成了一个机器，结果还担心机器抢了我们的位置，这还是“人”吗？不是，这是机器，这才是实际意义上的“机器人”。
+                    </span>
+                </p>
+                <p>
+                    <span
+                        >这种“机器人”，还不断把机器称为“人”，还不断赋与机器以人形、人声、人貌、人称，那么请问，这种“机器人”物种会不会被“人”机器所超越和代替呢？如果这种情况出现，人类到底应该怪机器还是怪“机器人”呢？（此处的机器人才是其本意，即像机器的人类。在中文语境中，需要将</span
+                    ><code>robot</code
+                    ><span
+                        >回归本意，即机器劳力或机器苦力）人类成为着重思想、智慧、人性、灵性的自由人，机器回归劳作的本质，帮助人类承担所有人类不擅长、不愿意、不喜欢、不应该承担的劳作任务。那么，你每天的工作，有多少内容属于上述的范畴呢？
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <span
+                        >我们都需要经历一个二十一世纪信息文明的”扫盲”过程，就像上一世纪的工业文明扫盲过程一样，那时是识字率，此时是信息商(另一种</span
+                    ><code>IQ</code><span>，即</span
+                    ><code>Information Quotient</code
+                    ><span>，其中包括数据商-</span><code>DQ</code><span>(</span
+                    ><code>Data Quotient</code><span>)，人工智能商-</span
+                    ><code>AIQ</code><span>(</span><code>AI Quotient</code
+                    ><span>)和媒介商-</span><code>MQ</code><span>(</span
+                    ><code>Medium Quotient</code
+                    ><span
+                        >)，目的是帮助大众针对具备学习能力和表现出能动性的</span
+                    ><code>Robot</code
+                    ><span
+                        >(智能机器劳力)袪魅。就像上一世纪之初，当人类学家邀请大洋洲原始部落的原住民首领来到大都会，当这些酋长和随从进入装备有电梯的高楼大堂时，会向时开时关的电梯门跪拜祈福。即使贵为酋长，如果没有现代化知识与经验，也无法理解为什么这道门（电梯门）如此神奇。刚才进去的还是老者，门关门开后，却走出一名青年；刚刚进去一名气宇轩昂的男子，门关门开后，却走出一名风情万种的婀娜少妇。请问，我们现在对于能够表现出人类样貌和行动的机器的反应，有何异同？
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <span
+                        >但是，人类极其容易被表象/符号所迷惑忘却能所之别。“感时花溅泪，恨别鸟惊心”，一旦机器被赋予与人类混淆的形式，或者生成的符号不是用来帮助人类传播正确的知识和开启民众的智慧，反而用无穷尽的文字、图片、视频、音频、味觉、嗅觉、触觉符号诱导人类的注意力(</span
+                    ><code>attention</code><span>)和意愿(</span
+                    ><code>intention</code><span>)，更有甚者开始打起</span
+                    ><code>Intention Economy</code
+                    ><span
+                        >(意愿经济学)的主意，那么本应收益却真正受害的只能是被玩火者有意或无意伤害的普罗大众和人类社会与文明进程。
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <span
+                        >我相信，被信息文明扫盲运动洗礼的大众，再听到各种”盲人摸四不像“的各种观点后，就会逐渐形成自己的人性判断。为什么这样做很重要？因为遍布全球、正在学习的机器会继续从人类的言谈举止中学习(</span
+                    ><code>在线学习</code><span>(</span
+                    ><code>Online Learning</code><span>)或者</span
+                    ><code>具身学习</code><span>(</span
+                    ><code>Embodied Learning</code
+                    ><span>))，这就形成一种被称为”自举(</span
+                    ><code>bootstaping</code
+                    ><span
+                        >)“的效应，有点类似于佛学中的一种说法叫做“共业”，机器终将学成人以为的样子，人也终将把有能力学习的机器塑造成自己臆想的样子。
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <span>这种带有递归(</span><code>recursion</code
+                    ><span
+                        >)属性的过程是极其高效、快速，也是极其危险的。也因此，二十一世纪控制论就强调针对所有具备反馈学习能力的机器，需要约束它仅仅解决“如何做(</span
+                    ><code>How</code
+                    ><span>)”的一阶控制论范畴，约束为人类的智能副驾(</span
+                    ><code>Copilot</code><span>)；而把“做什么(</span
+                    ><code>What</code><span>)”作为“人在环路中(</span
+                    ><code>HIP, Human-in-the-loop</code
+                    ><span
+                        >)”的人类专属决策点，让人类始终定位在二阶控制论的范畴，也就是人类始终是主驾(</span
+                    ><code>Pilot</code
+                    ><span
+                        >)。当然，随着技术的进步，之前的“人在环路中”也会因为模式的成熟而成为副驾的内容，但这绝不意味着人类让渡自己的生活与文明给机器，仅仅是二阶控制论的部分内容降级至一阶的范畴，人类任然是主驾。
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <span
+                        >那么让渡部分二阶控制权限给机器后人类做什么呢？那就是三阶控制论的范畴，即“为什么(</span
+                    ><code>Why</code><span>)”的部分，也称为“人在环路上(</span
+                    ><code>HOP, Human-on-the-loop</code
+                    ><span>)”。这才是这一轮人类文明进步的真正目标。 </span>
+                </p>
+                <hr />
+                <p>
+                    <span
+                        >过去几百年，人类社会受机械文明，或称为工业文明之赐，社会技术能力得到飞跃性的增长和加速。在工业文明下，地球人类的基本生存物质保障，如果不是由于人类固有的愚昧与贪婪，早已可以进化至和睦的大同社会阶段。可惜由于人类精神文明的落后，两场世界大战再加上人类毁灭自我能力增长后的各种世界纷争，让很多人类忘记了人类需要首先是一个人，才是前面加上各种形容词的xx人，
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <strong><span>没有了“人”，哪里还会有“xx人”？</span></strong
+                    ><span> </span>
+                </p>
+                <hr />
+                <p>
+                    <span
+                        >这些危机和解决方案，在过去的几百年内已经被讨论了无数次。当然，随着人类文明发展到能够利用机器操控物质、信息与能量（量子角度）这三种基本宇宙构成，我们所面临的机会与挑战也发展至人类需要反思己身精神文明，而不仅仅是物质文明的阶段，这是需要回归至人类“为什么”的元始因。
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <span
+                        >人类现在开发的信息机器与智能劳作机器，如果能够依据人类道德常识进行开发与利用，开发者、使用者和社会监管者都能够保持人类善良的初心，就可以解放人类；如果放纵人类心目中潜藏的邪恶与仇恨，贪婪与愚蠢，纯粹以商业利益和控制与占有为目的，那么人类前景着实堪忧。这种信息能力，再加载至机器的行动力之上，比之纯粹强大的火力、打击力和原子能力，既可以毁灭人的肉体，也可以毁灭人的精神，直至地球文明。
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <span
+                        >因此，二十一世纪信息文明扫盲运动，扫的不仅是文盲，更是人类的偏见、恶习、愚昧与无知。在科学与技术昌明了几百年后，我们已经亲身目睹与体会到了人类精神文明的重要性。物质文明的丰富，并不自动保证人类的幸福。如马克思和法兰克福学派的一贯主张，同时也是2024年诺贝尔经济学奖获得者达龙·阿西莫格鲁（Daron
+                        Acemoglu）在他的《力量与进步》(Power and
+                        Progress)一书中所述，技术进步从而为人类造福，不会自动发生。这需要科学与技术界、政府、学界、宗教界以及大众的参与和推动。
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <span
+                        >令人欣喜的是，正当大众媒体狂热的宣传机器又会做了点图，画了点画，机器视频又多么“拟像与仿真”啦，生成的工作报告有多么能够糊弄老师或领导啦，机器有超越人类的分析、规划与答题能力啦（人类居然忘记了当机器都可以答题时，人类为什么还要答机器能够回答的题啊，问不就是了！然后人干嘛？去探索机器不会的领域啊！何必浪费宝贵的人生在机械化的桎梏中呢？我不会探索和不知道探索什么？那不就是把自己活成机器了吗？因此真正的问题是何以为人)，正在有越来越多的有识之士，秉着为人类社会谋取福祉的信仰和初心，利用当前人工智能和精密机械的突飞猛进，在人类极其缺乏的优秀教育与知识资源平等共享、优秀医疗资源平等共享、办公效率提升、生产品质保障、社会高效治理、安全与国防、新药品、新材料、新理疗手段、新护理手段、量子科学、生命科学、天文学、宇宙学、哲学、神学等等与人类文明发展和进化息息相关的领域奋力拼搏与开拓。
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <span>为了人类的未来和我们的子孙后代，</span
+                    ><strong
+                        ><span
+                            >不要只满足于机器代替人，即使你有这种能力；不要只想着喂给人类精神快餐，即使你有这种资源</span
+                        ></strong
+                    ><span
+                        >。智能机器的成熟，是让人活成人样，让人具备人情，让人带有人味，智能机器远可以比与人争利和以画皮迷人更有利益人类的作用！
+                    </span>
+                </p>
+                <hr />
+                <p>
+                    <span>因此，</span
+                    ><strong
+                        ><span
+                            >把正在学习的机器和放弃学习的人类都归为“人”这种类别，是对真正的人类和机器共同的侮辱</span
+                        ></strong
+                    ><span>。 </span>
+                </p>
+                <p>
+                    <strong
+                        ><span>人就是追求智慧和灵性升华之人类，</span></strong
+                    ><span></span><br /><strong
+                        ><span
+                            >机就是努力学习和工作以减轻人类劳作之机器。</span
+                        ></strong
+                    ><span> </span>
+                </p>
+            </div>
+        </div>
+    </body>
+</html>
